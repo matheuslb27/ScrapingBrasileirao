@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from db.conexao import conectar
 import os
-from dotenv import load_dotenv
 
 class Classificacao:
 
@@ -18,7 +17,6 @@ class Classificacao:
         
         tabela_classificacao = soup.find('table', id='results2025241_overall')
         
-        #linha
         linhas = tabela_classificacao.find_all('tr')
 
         dados = [[col.get_text(strip=True) for col in linha.find_all(['th', 'td'])] for linha in linhas]
@@ -37,9 +35,10 @@ class Classificacao:
 
         for _, row in df_filtrado.iterrows():
             cursor.execute("""                   
-                INSERT INTO Classificacao2025 (Posicao, Equipe, Jogos, VIT, E, DER, GP, GC, SG, Pts, PtsporJogo, Ultimos5, Publico)
+                INSERT INTO Classificacao2025 (Posicao, Equipe, Jogos, VIT, E, DER, GP, GC, SG, Pts, 
+                    PtsporJogo, Ultimos5, Publico)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
+            """,
                 row['Cl'],
                 row['Equipe'],
                 int(row['MP']),
@@ -71,10 +70,8 @@ class Classificacao:
         res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
         
-        #tabela
         tabela = soup.find('table', id='results2025241_overall')
         
-        #linha
         linhas = tabela.find_all('tr')
 
         dados = [[col.get_text(strip=True) for col in linha.find_all(['th', 'td'])] for linha in linhas]
@@ -94,9 +91,9 @@ class Classificacao:
             cursor.execute("""
                 UPDATE Classificacao2025
                 SET Equipe = ?, Jogos = ?, VIT = ?, E = ?, DER = ?, GP = ?, GC = ?, SG = ?, Pts = ?,
-                PtsporJogo = ?, Ultimos5 = ?, Publico = ?
+                    PtsporJogo = ?, Ultimos5 = ?, Publico = ?
                 WHERE Posicao = ?
-                """,
+            """,
                 row['Equipe'],
                 int(row['MP']),
                 int(row['V']),

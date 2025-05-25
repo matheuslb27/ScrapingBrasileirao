@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from db.conexao import conectar
 import os
-from dotenv import load_dotenv
 
 class Estatisticas_times:
 
@@ -181,10 +180,10 @@ class Estatisticas_times:
             cursor.execute("""                    
                 UPDATE EstatisticasTimes
                 SET Posse = ?, PB = ?, CrtsA = ?, CrtV = ?, MediaGols = ?, MediaAssist = ?,
-                GC90 = ?, CaGC = ?, SV = ?, PercentualSV = ?, PT = ?, GPC = ?, PSV = ?, GPp = ?,
-                PercentualDefesas = ?, TD = ?, GC = ?, OG = ?, TC= ?, Cag= ?, SoTPercentual = ?,
-                Sh90 = ?, SoT90 = ?, Cmp = ?, Att = ?, CmpPercentual = ?, Fts = ?, FltsP = ?,
-                Impedimentos = ?, Crz = ?, Ganhos = ?, Perdas = ?, GanhosPercentual = ?
+                    GC90 = ?, CaGC = ?, SV = ?, PercentualSV = ?, PT = ?, GPC = ?, PSV = ?, GPp = ?,
+                    PercentualDefesas = ?, TD = ?, GC = ?, OG = ?, TC= ?, Cag= ?, SoTPercentual = ?,
+                    Sh90 = ?, SoT90 = ?, Cmp = ?, Att = ?, CmpPercentual = ?, Fts = ?, FltsP = ?,
+                    Impedimentos = ?, Crz = ?, Ganhos = ?, Perdas = ?, GanhosPercentual = ?
                 WHERE Equipe = ?           
             """,
                 float(row['Posse']),
