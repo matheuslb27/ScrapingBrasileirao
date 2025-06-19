@@ -84,6 +84,7 @@ class Classificacao:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
+        df_filtrado['Últimos 5'] = df_filtrado['Últimos 5'].apply(lambda x: ' '.join(list(str(x))))
 
         conn = conectar()
         cursor = conn.cursor()

@@ -11,10 +11,10 @@ if __name__ == "__main__":
     #Estatisticas_times.salvar_estats()
     #Calendario.salvar_rodadas()
     #Estatisticas_jogadores.salvar_estats_jog()
-    Salvar_logos.salvar_logos()
+    #Salvar_logos.salvar_logos()
 
-    #Classificacao.atualizar_classificacao()
-    #Estatisticas_times.atualizar_estats()
-    #Calendario.atualizar_rodadas()
-    #Estatisticas_jogadores.atualizar_estats_jog()
+    Classificacao.atualizar_classificacao()
+    Estatisticas_times.atualizar_estats()
+    Calendario.atualizar_rodadas()
+    Estatisticas_jogadores.atualizar_estats_jog()
     

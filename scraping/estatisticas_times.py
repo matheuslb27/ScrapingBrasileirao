@@ -158,12 +158,12 @@ class Estatisticas_times:
         df_5 = pd.DataFrame(dados_5)
         df_6 = pd.DataFrame(dados_6)
 
-        df_1_filtrado = df_1[[0, 3, 12, 14, 15, 22, 23]]
+        df_1_filtrado = df_1[[0, 3, 14, 15, 22, 23]]
         df_2_filtrado = df_2[[7, 8, 14, 15, 16, 17, 18, 19, 20]]
         df_3_filtrado = df_3[[5, 6, 7]]
         df_4_filtrado = df_4[[4, 5, 6, 7, 8]]
         df_5_filtrado = df_5[[3, 4, 5,]]
-        df_6_filtrado = df_6[[6, 7, 8, 9, 16, 17, 18]]
+        df_6_filtrado = df_6[[6, 7, 8, 9, 12, 13, 15, 16, 17, 18]]
 
         df_filtrado = pd.concat([
             df_1_filtrado, df_2_filtrado, df_3_filtrado,
@@ -181,15 +181,17 @@ class Estatisticas_times:
         for _, row in df_filtrado.iterrows():
             cursor.execute("""                    
                 UPDATE EstatisticasTimes
-                SET Posse = ?, PB = ?, CrtsA = ?, CrtV = ?, MediaGols = ?, MediaAssist = ?,
-                    GC90 = ?, CaGC = ?, SV = ?, PercentualSV = ?, PT = ?, GPC = ?, PSV = ?, GPp = ?,
-                    PercentualDefesas = ?, TD = ?, GC = ?, OG = ?, TC= ?, Cag= ?, SoTPercentual = ?,
-                    Sh90 = ?, SoT90 = ?, Cmp = ?, Att = ?, CmpPercentual = ?, Fts = ?, FltsP = ?,
-                    Impedimentos = ?, Crz = ?, Ganhos = ?, Perdas = ?, GanhosPercentual = ?
+                SET Posse = ?, CrtsA = ?, CrtV = ?, MediaGols = ?, MediaAssist = ?,
+                    GC90 = ?, ChutesGC = ?, SemVazar = ?, PercentualSV = ?, PT = ?, GPC = ?, PSV = ?, 
+                    GPp = ?,PercentualDefesas = ?, GCFalta = ?, GCEscanteio = ?, GolsContra = ?, 
+                    TotalChutes = ?, ChutesG = ?, ChutesPercentual = ?, TotalChutes90 = ?, 
+                    ChutesGol90 = ?, PassesCompletos = ?, PassesTentados = ?, PercentualPasses = ?, 
+                    FaltasCometidas = ?, FaltasProvocadas = ?, Cruzamentos = ?, PenaltisConvertidos = ?,
+                    PenaltisConcedidos = ?, RecuperacaoBola = ?, GanhosAereo = ?, PerdasAereo = ?,
+                    GanhosPercentual = ?
                 WHERE Equipe = ?           
             """,
                 float(row['Posse']),
-                int(row['PB']),
                 int(row['CrtsA']),
                 int(row['CrtV']),
                 float(row['Gols'].replace(',', '.')),
@@ -216,8 +218,10 @@ class Estatisticas_times:
                 float(row['Cmp%'].replace(',', '.')),
                 int(row['Fts']),
                 int(row['FltsP']),
-                int(row['Desativado']),
                 int(row['Crz']),
+                int(row['Pênaltis convertidos']),
+                int(row['PKcon']),
+                int(row['Recuperação']),
                 int(row['Ganhos']),
                 int(row['Perdas']),
                 float(row['Ganhos%'].replace(',', '.')),
