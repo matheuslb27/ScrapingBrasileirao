@@ -6,7 +6,8 @@ import os
 from datetime import datetime
 
 class Calendario:
-    
+     
+    @staticmethod
     def salvar_rodadas():
 
         url = os.getenv('url2')
@@ -68,7 +69,7 @@ class Calendario:
 
         print("Calendario inserido com sucesso!")
         
-
+    @staticmethod
     def atualizar_rodadas():
 
         url = os.getenv('url2')
@@ -121,8 +122,7 @@ class Calendario:
                 row['Visitante'],
                 float(row['Público']or 0),
                 row['Local'],
-                id_partida
-                             
+                id_partida                        
             )
             id_partida +=1
 

@@ -10,7 +10,7 @@ class Classificacao:
     @staticmethod
     def salvar_class():
         
-        url = os.getenv('url')
+        url = os.getenv('url1')
         scraper = cloudscraper.create_scraper()
         res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
@@ -35,9 +35,9 @@ class Classificacao:
 
         for _, row in df_filtrado.iterrows():
             cursor.execute("""                   
-                INSERT INTO Classificacao2025 (Posicao, Equipe, Jogos, VIT, E, DER, GP, GC, SG, Pts, 
+                INSERT INTO Classificacao (Posicao, Equipe, Jogos, VIT, E, DER, GP, GC, SG, Pts, 
                     PtsporJogo, Ultimos5, Publico)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
                 row['Cl'],
                 row['Equipe'],
@@ -61,11 +61,12 @@ class Classificacao:
         print("Tabela de classificação inserida com sucesso!")
 
 
+
     #Atualizar Classificação no Banco
     @staticmethod
     def atualizar_classificacao():
 
-        url = os.getenv('url')
+        url = os.getenv('url1')
         scraper = cloudscraper.create_scraper()
         res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
@@ -83,13 +84,14 @@ class Classificacao:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
+        df_filtrado['Últimos 5'] = df_filtrado['Últimos 5'].apply(lambda x: ' '.join(list(str(x))))
 
         conn = conectar()
         cursor = conn.cursor()
 
         for _, row in df_filtrado.iterrows():
             cursor.execute("""
-                UPDATE Classificacao2025
+                UPDATE Classificacao
                 SET Equipe = ?, Jogos = ?, VIT = ?, E = ?, DER = ?, GP = ?, GC = ?, SG = ?, Pts = ?,
                     PtsporJogo = ?, Ultimos5 = ?, Publico = ?
                 WHERE Posicao = ?
