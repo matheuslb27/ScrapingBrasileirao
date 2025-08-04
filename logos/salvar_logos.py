@@ -7,7 +7,7 @@ import io
 class Salvar_logos():
 
     @staticmethod
-    def salvar_logos():
+    def atualizar_logos():
 
         conn = pyodbc.connect(
             f"DRIVER={{{os.getenv('DB_DRIVER')}}};"
