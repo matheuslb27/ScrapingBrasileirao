@@ -2,27 +2,28 @@ import cloudscraper
 from bs4 import BeautifulSoup
 import pandas as pd
 from db.conexao import conectar
-import os
 
-class UFMG_Estatisticas:
+class UFMG_ProxRodada:
 
     @staticmethod
-    def salvar_estats_ufmg():
+    def salvar_proxrodada():
 
-        url = "https://www.mat.ufmg.br/futebol/campeao_seriea/"
+        url = "https://www.mat.ufmg.br/futebol/tabela-da-proxima-rodada_seriea/"
         scraper = cloudscraper.create_scraper()
         res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
 
-        prob_jogos = soup.find('table', id='tabelaCL')
-        linhas = prob_jogos.find_all('tr')
+        prox_rodada = soup.find('table', id="tabelaCL")
+        linhas = prox_rodada.find_all('tr')
         dados = [[col.get_text(strip=True) for col in linha.find_all(['th', 'td'])] for linha in linhas]
 
         df = pd.DataFrame(dados)
         df.columns = df.iloc[0]
         df = df.drop(index=0)
         df.reset_index(drop=True, inplace=True)
+        df = df.dropna(subset=['PVM', 'PE', 'PVV'])
         #print(df)
+        print(df.columns)
 
         tratamento_times = {
             'ATLÉTICO': 'Atlético Mineiro',
@@ -47,19 +48,31 @@ class UFMG_Estatisticas:
             'VITÓRIA': 'Vitória'
         }
 
-        df['TimesTratado'] = df['Times'].map(tratamento_times)
+        df['MandanteTratado'] = df['MANDANTE'].map(tratamento_times)
+        df['VisitanteTratado'] = df['VISITANTE'].map(tratamento_times)
         
         conn = conectar()
         cursor = conn.cursor()
 
         for _, row in df.iterrows():
             cursor.execute("""
-                UPDATE EstatisticasTimes
-                SET ProbCampeao = ?
-                WHERE Equipe = ?
-            """, (row['Prob(%)'], row['TimesTratado'])
+                UPDATE CalendarioRodadas
+                SET ProbMandante = ?,
+                ProbEmpate = ?,
+                ProbVisitante = ?
+                WHERE TimeCasa = ? AND TimeVisitante = ?
+            """,
+            (
+            row['PVM'],
+            row['PE'],
+            row['PVV'],
+            row['MandanteTratado'],
+            row['VisitanteTratado']
+            )
         )
-            
+
         conn.commit()
         cursor.close()
         conn.close()
+
+        print('Probilidade da próxima rodada atualizada com sucesso!')

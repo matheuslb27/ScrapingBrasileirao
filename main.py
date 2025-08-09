@@ -1,10 +1,11 @@
+from scraping import ufmg_proxrodada
 from scraping.classificacao import Classificacao
 from scraping.estatisticas_times import Estatisticas_times
 from scraping.calendario import Calendario
 from scraping.estatisticas_jogadores import Estatisticas_jogadores
 from logos.salvar_logos import Salvar_logos
-from scraping.ufmg_estatisticas import UFMG_Estatisticas
-
+from scraping.ufmg_probcampeao import UFMG_ProbCampeao
+from scraping.ufmg_proxrodada import UFMG_ProxRodada
 
 if __name__ == "__main__":
     
@@ -18,5 +19,5 @@ if __name__ == "__main__":
     #Estatisticas_times.atualizar_estats()
     #Calendario.atualizar_rodadas()
     #Estatisticas_jogadores.atualizar_estats_jog()
-    UFMG_Estatisticas.salvar_estats_ufmg()
-    
+    #UFMG_ProbCampeao.salvar_probcampeao()
+    UFMG_ProxRodada.salvar_proxrodada()

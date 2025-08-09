@@ -112,7 +112,7 @@ class Estatisticas_times:
                 int(row['Won']),
                 int(row['Lost']),
                 float(row['Won%'].replace(',', '.'))
-        )
+            )
         
         conn.commit()
         cursor.close()
@@ -227,7 +227,7 @@ class Estatisticas_times:
                 int(row['Lost']),
                 float(row['Won%'].replace(',', '.')),
                 row['Squad']
-        )
+            )
             
         conn.commit()
         cursor.close()
