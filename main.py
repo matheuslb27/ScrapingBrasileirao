@@ -14,10 +14,10 @@ if __name__ == "__main__":
     #Calendario.salvar_rodadas()
     #Estatisticas_jogadores.salvar_estats_jog()
     
-    #Salvar_logos.atualizar_logos()
     #Classificacao.atualizar_classificacao()
+    Salvar_logos.atualizar_logos()
     #Estatisticas_times.atualizar_estats()
     #Calendario.atualizar_rodadas()
     #Estatisticas_jogadores.atualizar_estats_jog()
     #UFMG_ProbCampeao.salvar_probcampeao()
-    UFMG_ProxRodada.salvar_proxrodada()
+    #UFMG_ProxRodada.salvar_proxrodada()

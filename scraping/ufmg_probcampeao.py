@@ -21,7 +21,6 @@ class UFMG_ProbCampeao:
         df.columns = df.iloc[0]
         df = df.drop(index=0)
         df.reset_index(drop=True, inplace=True)
-        #print(df)
 
         tratamento_times = {
             'ATLÉTICO': 'Atlético Mineiro',

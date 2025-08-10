@@ -28,7 +28,6 @@ class Classificacao:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        #print(df_filtrado.columns)
 
         conn = conectar()
         cursor = conn.cursor()

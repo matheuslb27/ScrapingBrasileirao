@@ -55,16 +55,13 @@ class Salvar_logos():
         for equipe, caminho_logo in logos_times.items():
             if os.path.exists(caminho_logo):
                 with open(caminho_logo, 'rb') as f:
-                    #Redimensiona imagem para 40x40 pixels
                     imagem = Image.open(f)
                     imagem = imagem.resize((40, 40), Image.Resampling.LANCZOS)
 
-                    #Cria um buffer de memória para salvar a imagem
                     buffer = io.BytesIO()
                     imagem.save(buffer, format="PNG")
                     logo_bin = buffer.getvalue()
 
-                #Converte a imagem para Base64 e adiciona o prefixo para data URL
                 logo_base64 = "data:image/png;base64," + base64.b64encode(logo_bin).decode('utf-8')
 
                 cursor.execute("""

@@ -30,8 +30,6 @@ class Calendario:
         df_filtrado.reset_index(drop=True, inplace=True)
         df_filtrado.dropna(how='all', inplace=True)
         df_filtrado.fillna('', inplace=True)
-        #df_filtrado.to_excel('rodadas.xlsx', index=False)     
-        #print(df_filtrado)
         
         conn = conectar()
         cursor = conn.cursor()
@@ -91,8 +89,6 @@ class Calendario:
         df_filtrado.reset_index(drop=True, inplace=True)
         df_filtrado.dropna(how='all', inplace=True)
         df_filtrado.fillna('', inplace=True)
-        #df_filtrado.to_excel('rodadas.xlsx', index=False)     
-        #print(df_filtrado)
 
         conn = conectar()
         cursor = conn.cursor()

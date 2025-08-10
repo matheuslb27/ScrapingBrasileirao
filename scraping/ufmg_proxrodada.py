@@ -22,8 +22,6 @@ class UFMG_ProxRodada:
         df = df.drop(index=0)
         df.reset_index(drop=True, inplace=True)
         df = df.dropna(subset=['PVM', 'PE', 'PVV'])
-        #print(df)
-        print(df.columns)
 
         tratamento_times = {
             'ATLÉTICO': 'Atlético Mineiro',

@@ -35,7 +35,6 @@ class Estatisticas_jogadores:
         df_filtrado.reset_index(drop=True, inplace=True)
         df_filtrado.replace('', '0', inplace=True)
         df_filtrado.fillna('0', inplace=True)
-        #print(df_filtrado.columns.tolist())
         
         #Funções para converter colunas para int e float
         def to_int(value):
@@ -91,7 +90,6 @@ class Estatisticas_jogadores:
         res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
 
-        #Removendo comentário da tabela para puxar os dados
         tabela = None
         comentarios = soup.find_all(string=lambda texto: isinstance(texto, Comment))
         for c in comentarios:

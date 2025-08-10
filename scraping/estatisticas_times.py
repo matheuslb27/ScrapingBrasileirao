@@ -59,9 +59,6 @@ class Estatisticas_times:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        #df_filtrado.to_excel('Estatisticas.xlsx', index=False)
-        #print(df_filtrado)
-        #print(df_filtrado.columns)
 
         conn = conectar()
         cursor = conn.cursor()        
@@ -173,7 +170,6 @@ class Estatisticas_times:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        #print(df_filtrado)
 
         conn = conectar()
         cursor = conn.cursor()
