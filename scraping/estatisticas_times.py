@@ -48,7 +48,7 @@ class Estatisticas_times:
         df_3_filtrado = df_3[[5, 6, 7]]
         df_4_filtrado = df_4[[4, 5, 6, 7, 8]]
         df_5_filtrado = df_5[[3, 4, 5,]]
-        df_6_filtrado = df_6[[6, 7, 8, 9, 12, 13, 15, 16, 17, 18]]
+        df_6_filtrado = df_6[[6, 7, 9, 12, 13, 15, 16, 17, 18]]
 
         #Concatena as colunas escolhidas de cada tabela
         df_filtrado = pd.concat([
@@ -59,9 +59,6 @@ class Estatisticas_times:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        #df_filtrado.to_excel('Estatisticas.xlsx', index=False)
-        #print(df_filtrado)
-        #print(df_filtrado.columns)
 
         conn = conectar()
         cursor = conn.cursor()        
@@ -77,42 +74,42 @@ class Estatisticas_times:
                     RecuperacaoBola, GanhosAereo, PerdasAereo, GanhosPercentual
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, 
-                row['Equipe'],
-                float(row['Posse']),
-                int(row['CrtsA']),
-                int(row['CrtV']),
-                float(row['Gols'].replace(',', '.')),
-                float(row['Assis.'].replace(',', '.')),
-                float(row['GC90'].replace(',', '.')),
-                int(row['CaGC']),
-                int(row['SV']),
-                float(row['%SV'].replace(',', '.')),
-                int(row['PT']),
-                int(row['GPC']),
-                int(row['Psv']),
-                int(row['GPp']),
-                float(row['%Defesas'].replace(',', '.')or 0),
-                int(row['TD']),
-                int(row['GC']),
+                row['Squad'],
+                float(row['Poss']),
+                int(row['CrdY']),
+                int(row['CrdR']),
+                float(row['Gls'].replace(',', '.')),
+                float(row['Ast'].replace(',', '.')),
+                float(row['GA90'].replace(',', '.')),
+                int(row['SoTA']),
+                int(row['CS']),
+                float(row['CS%'].replace(',', '.')),
+                int(row['PKatt']),
+                int(row['PKA']),
+                int(row['PKsv']),
+                int(row['PKm']),
+                float(row['Save%'].replace(',', '.') or 0),
+                int(row['FK']),
+                int(row['CK']),
                 int(row['OG']),
-                int(row['TC']),
-                int(row['CaG']),
+                int(row['Sh']),
+                int(row['SoT']),
                 float(row['SoT%'].replace(',', '.')),
                 float(row['Sh/90'].replace(',', '.')),
                 float(row['SoT/90'].replace(',', '.')),
                 int(row['Cmp']),
                 int(row['Att']),
                 float(row['Cmp%'].replace(',', '.')),
-                int(row['Fts']),
-                int(row['FltsP']),
-                int(row['Crz']),
-                int(row['Pênaltis convertidos']),
+                int(row['Fls']),
+                int(row['Fld']),
+                int(row['Crs']),
+                int(row['PKwon']),
                 int(row['PKcon']),
-                int(row['Recuperação']),
-                int(row['Ganhos']),
-                int(row['Perdas']),
-                float(row['Ganhos%'].replace(',', '.'))
-        )
+                int(row['Recov']),
+                int(row['Won']),
+                int(row['Lost']),
+                float(row['Won%'].replace(',', '.'))
+            )
         
         conn.commit()
         cursor.close()
@@ -173,7 +170,6 @@ class Estatisticas_times:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        #print(df_filtrado)
 
         conn = conectar()
         cursor = conn.cursor()
@@ -191,42 +187,43 @@ class Estatisticas_times:
                     GanhosPercentual = ?
                 WHERE Equipe = ?           
             """,
-                float(row['Posse']),
-                int(row['CrtsA']),
-                int(row['CrtV']),
-                float(row['Gols'].replace(',', '.')),
-                float(row['Assis.'].replace(',', '.')),
-                float(row['GC90'].replace(',', '.')),
-                int(row['CaGC']),
-                int(row['SV']),
-                float(row['%SV'].replace(',', '.')),
-                int(row['PT']),
-                int(row['GPC']),
-                int(row['Psv']),
-                int(row['GPp']),
-                float(row['%Defesas'].replace(',', '.')or 0),
-                int(row['TD']),
-                int(row['GC']),
+        
+                float(row['Poss']),
+                int(row['CrdY']),
+                int(row['CrdR']),
+                float(row['Gls'].replace(',', '.')),
+                float(row['Ast'].replace(',', '.')),
+                float(row['GA90'].replace(',', '.')),
+                int(row['SoTA']),
+                int(row['CS']),
+                float(row['CS%'].replace(',', '.')),
+                int(row['PKatt']),
+                int(row['PKA']),
+                int(row['PKsv']),
+                int(row['PKm']),
+                float(row['Save%'].replace(',', '.') or 0),
+                int(row['FK']),
+                int(row['CK']),
                 int(row['OG']),
-                int(row['TC']),
-                int(row['CaG']),
+                int(row['Sh']),
+                int(row['SoT']),
                 float(row['SoT%'].replace(',', '.')),
                 float(row['Sh/90'].replace(',', '.')),
                 float(row['SoT/90'].replace(',', '.')),
                 int(row['Cmp']),
                 int(row['Att']),
                 float(row['Cmp%'].replace(',', '.')),
-                int(row['Fts']),
-                int(row['FltsP']),
-                int(row['Crz']),
-                int(row['Pênaltis convertidos']),
+                int(row['Fls']),
+                int(row['Fld']),
+                int(row['Crs']),
+                int(row['PKwon']),
                 int(row['PKcon']),
-                int(row['Recuperação']),
-                int(row['Ganhos']),
-                int(row['Perdas']),
-                float(row['Ganhos%'].replace(',', '.')),
-                row['Equipe']
-        )
+                int(row['Recov']),
+                int(row['Won']),
+                int(row['Lost']),
+                float(row['Won%'].replace(',', '.')),
+                row['Squad']
+            )
             
         conn.commit()
         cursor.close()

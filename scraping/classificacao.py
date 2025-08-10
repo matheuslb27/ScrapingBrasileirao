@@ -28,7 +28,6 @@ class Classificacao:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        #print(df_filtrado.columns)
 
         conn = conectar()
         cursor = conn.cursor()
@@ -39,19 +38,19 @@ class Classificacao:
                     PtsporJogo, Ultimos5, Publico)
                 VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
-                row['Cl'],
-                row['Equipe'],
+                row['Rk'],
+                row['Squad'],
                 int(row['MP']),
-                int(row['V']),
-                int(row['E']),
+                int(row['W']),
                 int(row['D']),
-                int(row['GP']),
-                int(row['GC']),
+                int(row['L']),
+                int(row['GF']),
+                int(row['GA']),
                 int(row['GD']),
-                int(row['Pt']),
-                float(row['Pts/PPJ'].replace(',', '.') or 0),
-                row['Últimos 5'],
-                float(row['Público'].replace(',', '.') or 0)
+                int(row['Pts']),
+                float(row['Pts/MP'].replace(',', '.') or 0),
+                row['Last 5'],
+                float(row['Attendance'].replace(',', '.') or 0)
             )
 
         conn.commit()
@@ -84,7 +83,8 @@ class Classificacao:
         df_filtrado.columns = df_filtrado.iloc[0]
         df_filtrado = df_filtrado[1:]
         df_filtrado.reset_index(drop=True, inplace=True)
-        df_filtrado['Últimos 5'] = df_filtrado['Últimos 5'].apply(lambda x: ' '.join(list(str(x))))
+        df_filtrado['Last 5'] = df_filtrado['Last 5'].apply(lambda x: ' '.join(list(str(x))))
+        df_filtrado['Last 5'] = df_filtrado['Last 5'].replace('W L D W', 'V D E V')
 
         conn = conectar()
         cursor = conn.cursor()
@@ -96,19 +96,19 @@ class Classificacao:
                     PtsporJogo = ?, Ultimos5 = ?, Publico = ?
                 WHERE Posicao = ?
             """,
-                row['Equipe'],
+                row['Squad'],
                 int(row['MP']),
-                int(row['V']),
-                int(row['E']),
+                int(row['W']),
                 int(row['D']),
-                int(row['GP']),
-                int(row['GC']),
+                int(row['L']),
+                int(row['GF']),
+                int(row['GA']),
                 int(row['GD']),
-                int(row['Pt']),
-                float(row['Pts/PPJ'].replace(',', '.') or 0),
-                row['Últimos 5'],
-                float(row['Público'].replace(',', '.') or 0),
-                row['Cl']         
+                int(row['Pts']),
+                float(row['Pts/MP'].replace(',', '.') or 0),
+                row['Last 5'],
+                float(row['Attendance'].replace(',', '.') or 0),
+                row['Rk']         
             )
 
         conn.commit()

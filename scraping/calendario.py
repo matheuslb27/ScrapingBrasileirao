@@ -30,8 +30,6 @@ class Calendario:
         df_filtrado.reset_index(drop=True, inplace=True)
         df_filtrado.dropna(how='all', inplace=True)
         df_filtrado.fillna('', inplace=True)
-        #df_filtrado.to_excel('rodadas.xlsx', index=False)     
-        #print(df_filtrado)
         
         conn = conectar()
         cursor = conn.cursor()
@@ -39,11 +37,11 @@ class Calendario:
         id_partida = 1
         for _, row in df_filtrado.iterrows():
             
-            if row['Data'] and row['Data'].strip():
-                data_jogo = datetime.strptime(row['Data'].strip(), "%Y-%m-%d").date()  
+            if row['Date'] and row['Date'].strip():
+                data_jogo = datetime.strptime(row['Date'].strip(), "%Y-%m-%d").date()  
             
-            if row['Horário'] and row['Horário'].strip():
-                horario_jogo = datetime.strptime(row['Horário'].strip(), "%H:%M").time()
+            if row['Time'] and row['Time'].strip():
+                horario_jogo = datetime.strptime(row['Time'].strip(), "%H:%M").time()
 
             cursor.execute("""                   
                 INSERT INTO CalendarioRodadas (IdPartida, Rodada, Dia, DataJogo, Horario, TimeCasa, Resultado, 
@@ -51,15 +49,15 @@ class Calendario:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 id_partida,
-                int(row['Sem']),
-                row['Dia'],
+                int(row['Wk']),
+                row['Day'],
                 data_jogo,
                 horario_jogo,
-                row['Em casa'],
-                row['Resultado'],
-                row['Visitante'],
-                float(row['Público']or 0),
-                row['Local']               
+                row['Home'],
+                row['Score'],
+                row['Away'],
+                float(row['Attendance'].replace(',', '') or 0),
+                row['Venue']               
             )
             id_partida += 1
 
@@ -91,8 +89,6 @@ class Calendario:
         df_filtrado.reset_index(drop=True, inplace=True)
         df_filtrado.dropna(how='all', inplace=True)
         df_filtrado.fillna('', inplace=True)
-        #df_filtrado.to_excel('rodadas.xlsx', index=False)     
-        #print(df_filtrado)
 
         conn = conectar()
         cursor = conn.cursor()
@@ -101,11 +97,11 @@ class Calendario:
         for _, row in df_filtrado.iterrows():
             
             #Conversão data e hora
-            if row['Data'] and row['Data'].strip():
-                data_jogo = datetime.strptime(row['Data'].strip(), "%Y-%m-%d").date()  
+            if row['Date'] and row['Date'].strip():
+                data_jogo = datetime.strptime(row['Date'].strip(), "%Y-%m-%d").date()  
           
-            if row['Horário'] and row['Horário'].strip():
-                horario_jogo = datetime.strptime(row['Horário'].strip(), "%H:%M").time()
+            if row['Time'] and row['Time'].strip():
+                horario_jogo = datetime.strptime(row['Time'].strip(), "%H:%M").time()
 
             cursor.execute("""                   
                 UPDATE CalendarioRodadas 
@@ -113,15 +109,15 @@ class Calendario:
                     TimeVisitante = ?, Publico = ?, Estadio = ?
                 WHERE IdPartida = ?
             """,
-                int(row['Sem']),
-                row['Dia'],
+                int(row['Wk']),
+                row['Day'],
                 data_jogo,
                 horario_jogo,
-                row['Em casa'],
-                row['Resultado'],
-                row['Visitante'],
-                float(row['Público']or 0),
-                row['Local'],
+                row['Home'],
+                row['Score'],
+                row['Away'],
+                float(row['Attendance'].replace(',', '') or 0),
+                row['Venue'],
                 id_partida                        
             )
             id_partida +=1

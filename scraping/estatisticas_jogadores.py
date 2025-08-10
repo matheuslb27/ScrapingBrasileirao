@@ -35,7 +35,6 @@ class Estatisticas_jogadores:
         df_filtrado.reset_index(drop=True, inplace=True)
         df_filtrado.replace('', '0', inplace=True)
         df_filtrado.fillna('0', inplace=True)
-        #print(df_filtrado.columns.tolist())
         
         #Funções para converter colunas para int e float
         def to_int(value):
@@ -48,12 +47,12 @@ class Estatisticas_jogadores:
         cursor = conn.cursor()
 
         #Cálculo da média de gols e assistencias
-        df_filtrado['Gols'] = pd.to_numeric(df_filtrado['Gols'], errors='coerce')
+        df_filtrado['Gls'] = pd.to_numeric(df_filtrado['Gls'], errors='coerce')
         df_filtrado['MP'] = pd.to_numeric(df_filtrado['MP'], errors='coerce')
-        df_filtrado['Assis.'] = pd.to_numeric(df_filtrado['Assis.'], errors='coerce')
+        df_filtrado['Ast'] = pd.to_numeric(df_filtrado['Ast'], errors='coerce')
 
-        df_filtrado['mediaGols'] = (df_filtrado['Gols'] / df_filtrado['MP']).round(2)
-        df_filtrado['mediaAssis'] = (df_filtrado['Assis.'] / df_filtrado['MP']).round(2)
+        df_filtrado['mediaGols'] = (df_filtrado['Gls'] / df_filtrado['MP']).round(2)
+        df_filtrado['mediaAssis'] = (df_filtrado['Ast'] / df_filtrado['MP']).round(2)
 
         for _, row in df_filtrado.iterrows():
             cursor.execute("""                   
@@ -61,18 +60,18 @@ class Estatisticas_jogadores:
                             JogosDisputados, Minutagem, Gols, Assistencias, CrtsA, CrtsV, MediaGols, MediaAssistencias )
                 VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
-                to_int(row['Class.']),
-                row['Jogador'],
-                row['Nação'],
-                row['Pos.'],
-                row['Equipe'],
-                to_int(row['Nascimento']),
+                to_int(row['Rk']),
+                row['Player'],
+                row['Nation'],
+                row['Pos'],
+                row['Squad'],
+                to_int(row['Born']),
                 to_int(row['MP']),
-                to_int(row['Min.']),
-                to_int(row['Gols']),
-                to_int(row['Assis.']),
-                to_int(row['CrtsA']),
-                to_int(row['CrtV']),
+                to_int(row['Min']),
+                to_int(row['Gls']),
+                to_int(row['Ast']),
+                to_int(row['CrdY']),
+                to_int(row['CrdR']),
                 float(row['mediaGols']),
                 float(row['mediaAssis'])
             )
@@ -91,7 +90,6 @@ class Estatisticas_jogadores:
         res = scraper.get(url)
         soup = BeautifulSoup(res.text, 'html.parser')
 
-        #Removendo comentário da tabela para puxar os dados
         tabela = None
         comentarios = soup.find_all(string=lambda texto: isinstance(texto, Comment))
         for c in comentarios:
@@ -122,12 +120,12 @@ class Estatisticas_jogadores:
         conn = conectar()
         cursor = conn.cursor()
 
-        df_filtrado['Gols'] = pd.to_numeric(df_filtrado['Gols'], errors='coerce')
+        df_filtrado['Gls'] = pd.to_numeric(df_filtrado['Gls'], errors='coerce')
         df_filtrado['MP'] = pd.to_numeric(df_filtrado['MP'], errors='coerce')
-        df_filtrado['Assis.'] = pd.to_numeric(df_filtrado['Assis.'], errors='coerce')
+        df_filtrado['Ast'] = pd.to_numeric(df_filtrado['Ast'], errors='coerce')
 
-        df_filtrado['mediaGols'] = (df_filtrado['Gols'] / df_filtrado['MP']).round(2)
-        df_filtrado['mediaAssis'] = (df_filtrado['Assis.'] / df_filtrado['MP']).round(2)
+        df_filtrado['mediaGols'] = (df_filtrado['Gls'] / df_filtrado['MP']).round(2)
+        df_filtrado['mediaAssis'] = (df_filtrado['Ast'] / df_filtrado['MP']).round(2)
 
         for _, row in df_filtrado.iterrows():
             cursor.execute("""                   
@@ -137,20 +135,20 @@ class Estatisticas_jogadores:
                     MediaGols = ?, MediaAssistencias = ?
                 WHERE IdJogador = ?
             """,
-                row['Jogador'],
-                row['Nação'],
-                row['Pos.'],
-                row['Equipe'],
-                to_int(row['Nascimento']),
+                row['Player'],
+                row['Nation'],
+                row['Pos'],
+                row['Squad'],
+                to_int(row['Born']),
                 to_int(row['MP']),
-                to_int(row['Min.']),
-                to_int(row['Gols']),
-                to_int(row['Assis.']),
-                to_int(row['CrtsA']),
-                to_int(row['CrtV']),
+                to_int(row['Min']),
+                to_int(row['Gls']),
+                to_int(row['Ast']),
+                to_int(row['CrdY']),
+                to_int(row['CrdR']),
                 float(row['mediaGols']),
                 float(row['mediaAssis']),
-                to_int(row['Class.'])
+                to_int(row['Rk'])
             )
 
         conn.commit()
