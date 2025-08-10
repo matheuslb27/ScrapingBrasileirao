@@ -50,8 +50,3 @@ Desenvolvido como um projeto pessoal para praticar **web scraping com Python (Be
 - Integração entre scraping e visualização de dados  
 - Tratamento de dados esportivos em larga escala  
 - Design de dashboards focado em **experiência do usuário e storytelling**
-
----
-
-## 📸 Preview
-
