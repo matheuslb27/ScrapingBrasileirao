@@ -128,13 +128,22 @@ class Estatisticas_jogadores:
         df_filtrado['mediaAssis'] = (df_filtrado['Ast'] / df_filtrado['MP']).round(2)
 
         for _, row in df_filtrado.iterrows():
-            cursor.execute("""                   
-                UPDATE EstatisticasJogadores
-                SET NomeJogador = ?, Nacionalidade = ?, Posicao = ?, Equipe = ?, Nascimento = ?,
-                    JogosDisputados = ?, Minutagem = ?, Gols = ?, Assistencias = ?, CrtsA = ?, CrtsV = ?,
-                    MediaGols = ?, MediaAssistencias = ?
-                WHERE IdJogador = ?
-            """,
+            cursor.execute("""
+                IF EXISTS (SELECT 1 FROM EstatisticasJogadores WHERE IdJogador = ?)
+                    UPDATE EstatisticasJogadores
+                    SET NomeJogador = ?, Nacionalidade = ?, Posicao = ?, Equipe = ?, Nascimento = ?,
+                        JogosDisputados = ?, Minutagem = ?, Gols = ?, Assistencias = ?, CrtsA = ?, CrtsV = ?,
+                        MediaGols = ?, MediaAssistencias = ?
+                    WHERE IdJogador = ?
+                ELSE
+                    INSERT INTO EstatisticasJogadores (
+                        IdJogador, NomeJogador, Nacionalidade, Posicao, Equipe, Nascimento,
+                        JogosDisputados, Minutagem, Gols, Assistencias, CrtsA, CrtsV,
+                        MediaGols, MediaAssistencias
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            """, (
+                #UPDATE
+                to_int(row['Rk']),
                 row['Player'],
                 row['Nation'],
                 row['Pos'],
@@ -148,9 +157,26 @@ class Estatisticas_jogadores:
                 to_int(row['CrdR']),
                 float(row['mediaGols']),
                 float(row['mediaAssis']),
-                to_int(row['Rk'])
-            )
+                to_int(row['Rk']),
 
+                #INSERT
+                to_int(row['Rk']),
+                row['Player'],
+                row['Nation'],
+                row['Pos'],
+                row['Squad'],
+                to_int(row['Born']),
+                to_int(row['MP']),
+                to_int(row['Min']),
+                to_int(row['Gls']),
+                to_int(row['Ast']),
+                to_int(row['CrdY']),
+                to_int(row['CrdR']),
+                float(row['mediaGols']),
+                float(row['mediaAssis'])
+            )
+        )
+            
         conn.commit()
         cursor.close()
         conn.close()
